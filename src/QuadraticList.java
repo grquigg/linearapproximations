@@ -4,6 +4,7 @@ public class QuadraticList implements List {
 	protected int startX;
 	protected double endX;
 	protected double delta_x;
+	protected double recur_x = 1000;
 	protected int steps;
 	protected int reportSize;
 	DataNode head;
@@ -19,6 +20,7 @@ public class QuadraticList implements List {
 		steps = nSteps;
 		reportSize = steps;
 		delta_x = (double) (endX-startX) / steps;
+		System.out.println(delta_x);
 	}
 	
 	public QuadraticList(int start, int end, int nSteps, int rSteps) {
@@ -33,11 +35,13 @@ public class QuadraticList implements List {
 		delta_x = (double) (endX-startX) / steps;
 	}
 	
-	
-	public void createList() {
-		for (int i = 0; i < steps; i++) {
-			append(new DataNode());
+	public double recursiveSolution(double x) {
+		//given an initial end point, we can recur backwards to calculate the slope at each point in time
+		//System.out.println(x);
+		if (x <= delta_x) {
+			return 0;
 		}
+		return (recursiveSolution(x-delta_x) + (2 * (x - delta_x) * delta_x));
 	}
 	
 	public void append(DataNode d) {
@@ -89,28 +93,19 @@ public class QuadraticList implements List {
 	}
 	
 	public static void main (String [] args) {
+		int nSteps = 10;
 		System.out.println("Xo\tYo\tm\tX\tY");
-		int nSteps = 100;
-		QuadraticList q = new QuadraticList(0, 2, nSteps);
-		q.createList();
-		DataNode cur = q.head.next;
-		
+		QuadraticList array = new QuadraticList(0, 5, nSteps);
+		DataNode cur = array.head;
+	
 		for (int i = 0; i < nSteps; i++) {
-			q.calculate(cur);
-			q.reportData(cur);
+			array.append(new DataNode());
 			cur = cur.next;
-		}
-		
-		System.out.println("Xo\tYo\tm\tX\tY");
-		QuadraticList array = new QuadraticList(0, 2, nSteps);
-		array.createList();
-		cur = array.head.next;
-		
-		for (int i = 0; i < nSteps; i++) {
-			array.rungeKutta(cur);
+			array.calculate(cur);
 			array.reportData(cur);
-			cur = cur.next;
 		}
+		double solve = array.recursiveSolution(5);
+		System.out.println("Solution " + solve);
 		
 		
 	}
