@@ -4,7 +4,7 @@ public class QuadraticList implements List {
 	protected int startX;
 	protected double endX;
 	protected double delta_x;
-	protected double recur_x = 1000;
+	protected static double recur_x = 1000; //this is the maximum power of 10 number of recursive calls that we can have without getting into stack overflow
 	protected int steps;
 	protected int reportSize;
 	DataNode head;
@@ -35,13 +35,25 @@ public class QuadraticList implements List {
 		delta_x = (double) (endX-startX) / steps;
 	}
 	
-	public double recursiveSolution(double x) {
+	/**
+	 * Developing a recursive solution to the Euler approximation method will significantly decrease the amount of time that we are in garbage collection. 
+	 * @param x
+	 * @return
+	 */
+	public double recursiveSolution(double x, double stop) {
 		//given an initial end point, we can recur backwards to calculate the slope at each point in time
 		//System.out.println(x);
-		if (x <= delta_x) {
-			return 0;
+		if (x <= stop) {
+			if (stop == 0) {
+				return 0;
+			}
+			return x + 2 * delta_x;
 		}
-		return (recursiveSolution(x-delta_x) + (2 * (x - delta_x) * delta_x));
+		return (recursiveSolution(x-delta_x, stop) + (2 * (x) * delta_x));
+	}
+	
+	public double getDeltaX() {
+		return delta_x;
 	}
 	
 	public void append(DataNode d) {
@@ -93,18 +105,20 @@ public class QuadraticList implements List {
 	}
 	
 	public static void main (String [] args) {
-		int nSteps = 10;
+		int nSteps = 1000;
 		System.out.println("Xo\tYo\tm\tX\tY");
-		QuadraticList array = new QuadraticList(0, 5, nSteps);
+		double end = 2.0;
+		int begin = 0;
+		QuadraticList array = new QuadraticList(begin, end, nSteps);
 		DataNode cur = array.head;
-	
+		
 		for (int i = 0; i < nSteps; i++) {
 			array.append(new DataNode());
 			cur = cur.next;
 			array.calculate(cur);
 			array.reportData(cur);
 		}
-		double solve = array.recursiveSolution(5);
+		double solve = array.recursiveSolution(end, begin) - (2 * end * array.getDeltaX());
 		System.out.println("Solution " + solve);
 		
 		
