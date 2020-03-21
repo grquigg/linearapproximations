@@ -4,7 +4,7 @@ public class QuadraticList implements List {
 	protected int startX;
 	protected double endX;
 	protected double delta_x;
-	protected static double recur_x = 1000; //this is the maximum power of 10 number of recursive calls that we can have without getting into stack overflow
+	protected double recur_x; //this is the maximum power of 10 number of recursive calls that we can have without getting into stack overflow
 	protected int steps;
 	protected int reportSize;
 	DataNode head;
@@ -20,7 +20,7 @@ public class QuadraticList implements List {
 		steps = nSteps;
 		reportSize = steps;
 		delta_x = (double) (endX-startX) / steps;
-		System.out.println(delta_x);
+		recur_x = delta_x / 1000;
 	}
 	
 	public QuadraticList(int start, int end, int nSteps, int rSteps) {
@@ -44,13 +44,21 @@ public class QuadraticList implements List {
 		//given an initial end point, we can recur backwards to calculate the slope at each point in time
 		//System.out.println(x);
 		if (x <= stop) {
-			if (stop == 0) {
+			if (stop <= 0) {
 				return 0;
 			}
-			return x + 2 * delta_x;
+			
+			return x * x;
 		}
-		return (recursiveSolution(x-delta_x, stop) + (2 * (x) * delta_x));
+		return ((2 * (x) * recur_x) + recursiveSolution(x-recur_x, stop));
 	}
+	
+	public double linearSummation(double begin, double end) {
+		double summation = 0;
+		return summation;
+	}
+	
+	
 	
 	public double getDeltaX() {
 		return delta_x;
@@ -105,21 +113,41 @@ public class QuadraticList implements List {
 	}
 	
 	public static void main (String [] args) {
-		int nSteps = 1000;
-		System.out.println("Xo\tYo\tm\tX\tY");
-		double end = 2.0;
 		int begin = 0;
-		QuadraticList array = new QuadraticList(begin, end, nSteps);
-		DataNode cur = array.head;
+		double end = 1;
+		System.out.println("Xo\tYo\tm\tX\tY");
 		
-		for (int i = 0; i < nSteps; i++) {
-			array.append(new DataNode());
-			cur = cur.next;
-			array.calculate(cur);
-			array.reportData(cur);
+		QuadraticList arr = new QuadraticList(begin, end, 10);
+		arr.append(new DataNode());
+		DataNode cursor = arr.head;
+		
+		double x = begin;
+		cursor = cursor.next;
+		cursor.setInitX(begin);
+		cursor.setInitY(begin * begin);
+		x += arr.getDeltaX();
+		cursor.setFinX(x);
+		double solve = arr.recursiveSolution(cursor.getFinX(), cursor.getInitX());
+		cursor.setFinY(solve - (2 * cursor.getInitX() * arr.recur_x));
+		arr.reportData(cursor);
+		
+		for (int i = 1; i < 10; i++) {
+			arr.append(new DataNode());
+			cursor = cursor.next;
+			cursor.setInitX(x);
+			cursor.setInitY(cursor.previous.getFinY());
+			x += arr.getDeltaX();
+			cursor.setFinX(x);
+			double temp = arr.recursiveSolution(cursor.getFinX(), cursor.getInitX());
+			cursor.setFinY(temp - (2 * cursor.getInitX() * arr.recur_x));
+			if (i % 1 == 0) {
+				arr.reportData(cursor);
+			}
 		}
-		double solve = array.recursiveSolution(end, begin) - (2 * end * array.getDeltaX());
-		System.out.println("Solution " + solve);
+		
+		
+		
+		
 		
 		
 	}
