@@ -44,20 +44,38 @@ public class QuadraticList implements List {
 		//given an initial end point, we can recur backwards to calculate the slope at each point in time
 		//System.out.println(x);
 		if (x <= stop) {
-			if (stop <= 0) {
-				return 0;
-			}
-			
 			return x * x;
 		}
 		return ((2 * (x) * recur_x) + recursiveSolution(x-recur_x, stop));
 	}
 	
-	public double linearSummation(double begin, double end) {
+	public double linearSummation(double nSteps) {
 		double summation = 0;
+		for (int i = 0; i < nSteps; i++) {
+			double sum = 0;
+			
+			for (int j = 1000 * i; j < 1000 *(i+1); j++) {
+				sum += (delta_x * j / 1000);
+			}
+			sum = sum * 2 * (delta_x / 1000);
+			summation += sum;
+			System.out.printf("%.4f\n", summation);
+		}
+		
 		return summation;
 	}
 	
+	public double summation(double nSteps) {
+		double sum = 0;
+		for (int i = 0; i < nSteps; i++) {
+			double link = 0;
+			long num = 1000000*i + 500000;
+			link = 2 * (delta_x / 1000) * (delta_x / 1000) * num;
+			sum += link;
+			System.out.printf("%.4f\n", sum);
+		}
+		return sum;
+	}
 	
 	
 	public double getDeltaX() {
@@ -114,10 +132,10 @@ public class QuadraticList implements List {
 	
 	public static void main (String [] args) {
 		int begin = 0;
-		double end = 1;
+		double end = 10;
 		System.out.println("Xo\tYo\tm\tX\tY");
 		
-		QuadraticList arr = new QuadraticList(begin, end, 10);
+		QuadraticList arr = new QuadraticList(begin, end, 100);
 		arr.append(new DataNode());
 		DataNode cursor = arr.head;
 		
@@ -128,10 +146,10 @@ public class QuadraticList implements List {
 		x += arr.getDeltaX();
 		cursor.setFinX(x);
 		double solve = arr.recursiveSolution(cursor.getFinX(), cursor.getInitX());
-		cursor.setFinY(solve - (2 * cursor.getInitX() * arr.recur_x));
+		cursor.setFinY(solve);
 		arr.reportData(cursor);
 		
-		for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 100; i++) {
 			arr.append(new DataNode());
 			cursor = cursor.next;
 			cursor.setInitX(x);
@@ -144,6 +162,9 @@ public class QuadraticList implements List {
 				arr.reportData(cursor);
 			}
 		}
+		
+		//arr.linearSummation(10000);
+		arr.summation(100);
 		
 		
 		
