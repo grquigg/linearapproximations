@@ -124,7 +124,7 @@ public class PhysicsNode {
 		getFx();
 		getFy();
 		getFz();
-		pointCharge(Math.pow(10, -9));
+		//pointCharge(Math.pow(10, -9));
 		getAx();
 		getAy();
 		getAz();
