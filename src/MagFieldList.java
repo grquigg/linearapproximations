@@ -50,6 +50,76 @@ public class MagFieldList {
 		d.setNext(tail);
 	}
 	
+	public long factorial(long n) {
+		if (n <= 1) {
+			return 1;
+		}
+		else return n * factorial(n-1);
+	}
+	
+	public long binomial(int n, int k) { //n choose k
+		return factorial(n) / (factorial(k) * factorial(n-k));
+	}
+	
+	
+	public void calculateVelocity(int n, int Vxo, int Vyo) {
+		double[] V = new double[2];
+		double c = (charge * mag * delta_t) / mass;
+		V[0] = Vxo;
+		V[1] = Vyo;
+		for (int i = 0; i < n; i++) {
+			double temp1 = V[0] + (c * V[1]);
+			double temp2 = V[1] - (c * V[0]);
+			V[0] = temp1;
+			V[1] = temp2;
+		}
+		System.out.println(V[0] + "\t" + V[1]);
+		
+		
+	}
+	
+	public void calculateVy(int n, int Vxo, int Vyo) {
+		System.out.println(delta_t);
+		int approx = n % 4;
+		int total = n - approx;
+		double c = (charge * mag * delta_t) / mass;
+		System.out.println(c);
+		double Vy = 0;
+		for (int i = 0; i < total ; i+=4) {
+			int [] values = {i, i+1, i+2, i+3};
+			Vy += binomial(n, values[0]) * Vyo * Math.pow(c, values[0]);
+			Vy -= binomial(n, values[1]) * Vxo * Math.pow(c, values[1]);
+			Vy -= binomial(n, values[2]) * Vyo * Math.pow(c, values[2]);
+			Vy += binomial(n, values[3]) * Vxo * Math.pow(c, values[3]);
+		}
+		switch(approx) {
+		case 0:
+			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
+			break;
+		case 1:
+			System.out.println("Modulo 1");
+			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			break;
+		case 2:
+			System.out.println("Modulo 2");
+			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			Vy -= binomial(n, total+2) * Vyo * Math.pow(c, total+2);
+			break;
+		case 3:
+			System.out.println("Modulo 3");
+			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			Vy -= binomial(n, total+2) * Vyo * Math.pow(c, total+2);
+			Vy += binomial(n, total+3) * Vxo * Math.pow(c, total+3);
+			break;
+		}
+		double t = n * delta_t;
+		System.out.println(t + " s\t" + Vy);
+		
+	}
+	
 	public void calculate(PhysicsNode d) {
 		if (d.previous != head) {
 			d.setT(d.previous.getFinalT());
@@ -83,18 +153,19 @@ public class MagFieldList {
 	 */
 	
 	public static void main(String [] args) {
-		System.out.println("t\tq\tBx\tBy\tBz\tXo\tYo\tVxo\tVyo\tVzo\tFx\tFy\tFz\taX\taY\taZ\tVx\tVy\tVz\tX\tY");
-		int nSteps = 60;
+//		System.out.println("t\tq\tBx\tBy\tBz\tXo\tYo\tVxo\tVyo\tVzo\tFx\tFy\tFz\taX\taY\taZ\tVx\tVy\tVz\tX\tY");
+		int nSteps = 1000;
 		MagFieldList q = new MagFieldList(0, 0, 0, 0, 5, 0, 1, nSteps, 1, 1, 1);
-		q.createList();
-		PhysicsNode cur = q.head.next;
-		
-		for (int i = 0; i < nSteps; i++) {
-			q.calculate(cur);
-			cur.reportData();
-			cur = cur.next;
-		}
-		
+//		q.createList();
+//		PhysicsNode cur = q.head.next;
+//		
+//		for (int i = 0; i < nSteps; i++) {
+//			q.calculate(cur);
+//			cur.reportData();
+//			cur = cur.next;
+//		}
+		q.calculateVy(21, 0, 5);
+		q.calculateVelocity(210, 0, 5);
 		
 	}
 }
