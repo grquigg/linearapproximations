@@ -169,9 +169,9 @@ public class PhysicsNode {
 	}
 	
 	public void reportData() {
-		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t", init_t, q, Bx, By, Bz, Xo, Yo);
-		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t", Vxo, Vyo, Vzo, Fx, Fy, Fz);
-		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t\n", aX, aY, aZ, Vx, Vy, Vz, X, Y);
+//		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t", init_t, q, Bx, By, Bz, Xo, Yo);
+//		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t", Vxo, Vyo, Vzo, Fx, Fy, Fz);
+		System.out.printf("%.4f\t%.4f\t\n", X, Y);
 	}
 	
 	

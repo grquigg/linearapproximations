@@ -20,7 +20,7 @@ public class QuadraticList implements List {
 		steps = nSteps;
 		reportSize = steps;
 		delta_x = (double) (endX-startX) / steps;
-		recur_x = delta_x / 1000;
+		recur_x = delta_x;
 	}
 	
 	public QuadraticList(int start, int end, int nSteps, int rSteps) {
@@ -44,9 +44,93 @@ public class QuadraticList implements List {
 		//given an initial end point, we can recur backwards to calculate the slope at each point in time
 		//System.out.println(x);
 		if (x <= stop) {
-			return x * x;
+			return 2 * x * x;
 		}
 		return ((2 * (x) * recur_x) + recursiveSolution(x-recur_x, stop));
+	}
+	
+	public double recursiveSolution2(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + recursiveSolution2(x-(2*recur_x), stop));
+	}
+	
+	public double recursiveSolution3(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		} else if (x <= stop+(2*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + (2 * (x- (2*recur_x)) * recur_x) + recursiveSolution3(x-(3*recur_x), stop));
+	}
+	
+	public double recursiveSolution4(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		} else if (x <= stop+(2*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * x));
+		} else if (x <= stop+(3*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + (2 * (x- (2*recur_x)) * recur_x) + (2 * (x- (3*recur_x)) * recur_x) + recursiveSolution4(x-(4*recur_x), stop));
+	}
+	
+	public double recursiveSolution5(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		} else if (x <= stop+(2*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * x));
+		} else if (x <= stop+(3*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(4*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + (2 * (x- (2*recur_x)) * recur_x) + (2 * (x- (3*recur_x)) * recur_x) + (2 * (x- (4*recur_x)) * recur_x) + recursiveSolution5(x-(5*recur_x), stop));
+	}
+	
+	public double recursiveSolution6(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		} else if (x <= stop+(2*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * x));
+		} else if (x <= stop+(3*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(4*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(5*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * (x-(4*recur_x))) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + (2 * (x- (2*recur_x)) * recur_x) + (2 * (x- (3*recur_x)) * recur_x) + (2 * (x- (4*recur_x)) * recur_x) + (2 * (x - (5*recur_x)) * recur_x) + recursiveSolution6(x-(6*recur_x), stop));
+	}
+	
+	public double recursiveSolution7(double x, double stop) {
+		if (x <= stop) {
+			return 2 * x * x;
+		} else if (x <= stop+recur_x) {
+			return ((2 * (x) * recur_x) + (2 * x * x));
+		} else if (x <= stop+(2*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * x));
+		} else if (x <= stop+(3*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(4*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(5*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * (x-(4*recur_x))) + (2 * x * x));
+		} else if (x <= stop+(6*recur_x)) {
+			return ((2 * x * recur_x) + (2 * x * (x-recur_x)) + (2 * x * (x-(2*recur_x))) + (2 * x * (x-(3*recur_x))) + (2 * x * (x-(4*recur_x))) + (2 * x * (x-(5*recur_x))) + (2 * x * x));
+		}
+		return ((2 * (x) * recur_x) + (2 * (x-recur_x) * recur_x) + (2 * (x- (2*recur_x)) * recur_x) + (2 * (x- (3*recur_x)) * recur_x) + (2 * (x- (4*recur_x)) * recur_x) + (2 * (x - (5*recur_x)) * recur_x) + (2 * (x - (6*recur_x)) * recur_x) + recursiveSolution7(x-(7*recur_x), stop));
 	}
 	
 	public double linearSummation(double nSteps) {
@@ -127,15 +211,14 @@ public class QuadraticList implements List {
 		d.setFinY(y);
 	}
 	public void reportData(DataNode date) {
-		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n", date.getInitX(), date.getInitY(), date.getSlope(), date.getFinX(), date.getFinY());
+		System.out.printf("%.4f\t%.4f\t%.4f\t%.4f\t%f\n", date.getInitX(), date.getInitY(), date.getSlope(), date.getFinX(), date.getFinY());
 	}
 	
 	public static void main (String [] args) {
 		int begin = 0;
-		double end = 10;
-		System.out.println("Xo\tYo\tm\tX\tY");
+		double end = 2;
 		
-		QuadraticList arr = new QuadraticList(begin, end, 100);
+		QuadraticList arr = new QuadraticList(begin, end, 5000);
 		arr.append(new DataNode());
 		DataNode cursor = arr.head;
 		
@@ -145,26 +228,19 @@ public class QuadraticList implements List {
 		cursor.setInitY(begin * begin);
 		x += arr.getDeltaX();
 		cursor.setFinX(x);
-		double solve = arr.recursiveSolution(cursor.getFinX(), cursor.getInitX());
+		System.out.println(arr.recur_x);
+		long start = System.nanoTime();
+		double solve = arr.recursiveSolution7(end, cursor.getInitX());
+		long finish = System.nanoTime();
+		long elapsed = (finish - start);
 		cursor.setFinY(solve);
+		System.out.println(elapsed);
+		System.out.println("Xo\tYo\tm\tX\tY");
 		arr.reportData(cursor);
 		
-		for (int i = 1; i < 100; i++) {
-			arr.append(new DataNode());
-			cursor = cursor.next;
-			cursor.setInitX(x);
-			cursor.setInitY(cursor.previous.getFinY());
-			x += arr.getDeltaX();
-			cursor.setFinX(x);
-			double temp = arr.recursiveSolution(cursor.getFinX(), cursor.getInitX());
-			cursor.setFinY(temp - (2 * cursor.getInitX() * arr.recur_x));
-			if (i % 1 == 0) {
-				arr.reportData(cursor);
-			}
-		}
 		
 		//arr.linearSummation(10000);
-		arr.summation(100);
+//		arr.summation(100);
 		
 		
 		

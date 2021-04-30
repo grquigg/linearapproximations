@@ -54,11 +54,34 @@ public class MagFieldList {
 		if (n <= 1) {
 			return 1;
 		}
-		else return n * factorial(n-1);
+		else {
+			return n * factorial(n-1);
+		}
 	}
 	
+	public int recursiveBinomial(int n, int k) {
+		if(k == 0 || k == n) {
+			return 1;
+		} else {
+			return (recursiveBinomial(n-1, k-1) + recursiveBinomial(n-1, k));
+		}
+	}
+	public long binomial2(int n, int k) {
+		long l = 0;
+		if (k == 1 || n == k) {
+			l = 1;
+		} else {
+			long temp = 1;
+			for (int i = n; i > n-k; i--) {
+				temp *= i;
+			}
+			l = temp / factorial(k);
+		}
+		return l;
+	}
 	public long binomial(int n, int k) { //n choose k
-		return factorial(n) / (factorial(k) * factorial(n-k));
+		long l = factorial(n) / (factorial(k) * factorial(n-k));
+		return l;
 	}
 	
 	
@@ -87,32 +110,32 @@ public class MagFieldList {
 		double Vy = 0;
 		for (int i = 0; i < total ; i+=4) {
 			int [] values = {i, i+1, i+2, i+3};
-			Vy += binomial(n, values[0]) * Vyo * Math.pow(c, values[0]);
-			Vy -= binomial(n, values[1]) * Vxo * Math.pow(c, values[1]);
-			Vy -= binomial(n, values[2]) * Vyo * Math.pow(c, values[2]);
-			Vy += binomial(n, values[3]) * Vxo * Math.pow(c, values[3]);
+			Vy += recursiveBinomial(n, values[0]) * Vyo * Math.pow(c, values[0]);
+			Vy -= recursiveBinomial(n, values[1]) * Vxo * Math.pow(c, values[1]);
+			Vy -= recursiveBinomial(n, values[2]) * Vyo * Math.pow(c, values[2]);
+			Vy += recursiveBinomial(n, values[3]) * Vxo * Math.pow(c, values[3]);
 		}
 		switch(approx) {
 		case 0:
-			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
+			Vy += recursiveBinomial(n, total) * Vyo * Math.pow(c, total);
 			break;
 		case 1:
 			System.out.println("Modulo 1");
-			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
-			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			Vy += recursiveBinomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= recursiveBinomial(n, total+1) * Vxo * Math.pow(c, total+1);
 			break;
 		case 2:
 			System.out.println("Modulo 2");
-			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
-			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
-			Vy -= binomial(n, total+2) * Vyo * Math.pow(c, total+2);
+			Vy += recursiveBinomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= recursiveBinomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			Vy -= recursiveBinomial(n, total+2) * Vyo * Math.pow(c, total+2);
 			break;
 		case 3:
 			System.out.println("Modulo 3");
-			Vy += binomial(n, total) * Vyo * Math.pow(c, total);
-			Vy -= binomial(n, total+1) * Vxo * Math.pow(c, total+1);
-			Vy -= binomial(n, total+2) * Vyo * Math.pow(c, total+2);
-			Vy += binomial(n, total+3) * Vxo * Math.pow(c, total+3);
+			Vy += recursiveBinomial(n, total) * Vyo * Math.pow(c, total);
+			Vy -= recursiveBinomial(n, total+1) * Vxo * Math.pow(c, total+1);
+			Vy -= recursiveBinomial(n, total+2) * Vyo * Math.pow(c, total+2);
+			Vy += recursiveBinomial(n, total+3) * Vxo * Math.pow(c, total+3);
 			break;
 		}
 		double t = n * delta_t;
@@ -153,19 +176,20 @@ public class MagFieldList {
 	 */
 	
 	public static void main(String [] args) {
-//		System.out.println("t\tq\tBx\tBy\tBz\tXo\tYo\tVxo\tVyo\tVzo\tFx\tFy\tFz\taX\taY\taZ\tVx\tVy\tVz\tX\tY");
-		int nSteps = 1000;
+//		System.out.println("X\tY");
+		int nSteps = 100;
 		MagFieldList q = new MagFieldList(0, 0, 0, 0, 5, 0, 1, nSteps, 1, 1, 1);
-//		q.createList();
-//		PhysicsNode cur = q.head.next;
-//		
-//		for (int i = 0; i < nSteps; i++) {
+		q.createList();
+		PhysicsNode cur = q.head.next;
+		
+		for (int i = 0; i < 10; i++) {
 //			q.calculate(cur);
 //			cur.reportData();
 //			cur = cur.next;
-//		}
-		q.calculateVy(21, 0, 5);
-		q.calculateVelocity(210, 0, 5);
+			q.calculateVy(i+1, 0, 5);
+		}
+		int t = q.recursiveBinomial(21, 20);
+		System.out.println(t);
 		
 	}
 }
